@@ -72,27 +72,51 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza
+      {numPizzas > 0 ? (
+        <ul className="pizzas">
+          {pizzas.map((pizza) => (
+            <Pizza pizzaProp={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : (
+        <p>We're still working on our menu. Please come back later.</p>
+      )}
+
+      {/* <Pizza
         name="Pizza Spinaci"
-        ingredient="Tomato, mozarella, spinach, and ricotta cheese"
+        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
         photoName="pizzas/spinaci.jpg"
-        price="10"
+        price={10}
       />
+      <Pizza
+        name="Pizza Funghi"
+        ingredients="Tomato, mushrooms"
+        photoName="pizzas/funghi.jpg"
+        price={12}
+      /> */}
     </main>
   );
 }
 
 function Pizza(props) {
   console.log(props);
+
+  if (props.pizzaProp.soldOut) return null;
   return (
-    <div>
-      <img src="pizzas/spinaci.jpg" alt="Pizza Spinaci" />
-      <h3>Pizza Spinaci</h3>
-      <p>Tomato, mozarella, spinach, and ricotta cheese</p>
-    </div>
+    <li className="pizza">
+      <img src={props.pizzaProp.photoName} alt={props.pizzaProp.name} />
+      <div>
+        <h3>{props.pizzaProp.name}</h3>
+        <p>{props.pizzaProp.ingredients}</p>
+        <span>{props.pizzaProp.price}</span>
+      </div>
+    </li>
   );
 }
 
@@ -111,7 +135,11 @@ function Footer() {
 
   return (
     <footer className="footer">
-      It is {new Date().toLocaleTimeString()}. We are currently open!
+      {isOpen ? (
+        <p>It is {new Date().toLocaleTimeString()}. We are currently open!</p>
+      ) : (
+        <p>We're closed! We're happy to welcome you between 12pm to 10pm.</p>
+      )}
     </footer>
   );
 }
