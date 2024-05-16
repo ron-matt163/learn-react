@@ -58,11 +58,6 @@ function App() {
 }
 
 function Header() {
-  // const headerStyle = {
-  //   color: "red",
-  //   fontSize: "48px",
-  //   textTransform: "uppercase",
-  // };
   const headerStyle = {};
   return (
     <header className="header">
@@ -79,11 +74,14 @@ function Menu() {
     <main className="menu">
       <h2>Our Menu</h2>
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaProp={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <>
+          <p>Authentic Italian Pizzas. Best you've ever tasted (probably)!</p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaProp={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
       ) : (
         <p>We're still working on our menu. Please come back later.</p>
       )}
@@ -104,17 +102,17 @@ function Menu() {
   );
 }
 
-function Pizza(props) {
-  console.log(props);
+function Pizza({ pizzaProp }) {
+  console.log(pizzaProp);
 
-  if (props.pizzaProp.soldOut) return null;
+  // if (pizzaProp.soldOut) return null;
   return (
-    <li className="pizza">
-      <img src={props.pizzaProp.photoName} alt={props.pizzaProp.name} />
+    <li className={`pizza ${pizzaProp.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaProp.photoName} alt={pizzaProp.name} />
       <div>
-        <h3>{props.pizzaProp.name}</h3>
-        <p>{props.pizzaProp.ingredients}</p>
-        <span>{props.pizzaProp.price}</span>
+        <h3>{pizzaProp.name}</h3>
+        <p>{pizzaProp.ingredients}</p>
+        <span>{pizzaProp.soldOut ? "Sold Out" : pizzaProp.price}</span>
       </div>
     </li>
   );
@@ -136,11 +134,20 @@ function Footer() {
   return (
     <footer className="footer">
       {isOpen ? (
-        <p>It is {new Date().toLocaleTimeString()}. We are currently open!</p>
+        <Order />
       ) : (
         <p>We're closed! We're happy to welcome you between 12pm to 10pm.</p>
       )}
     </footer>
+  );
+}
+
+function Order() {
+  return (
+    <div className="order">
+      <p>It is {new Date().toLocaleTimeString()}. We are currently open!</p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
